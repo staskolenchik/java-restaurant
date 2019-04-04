@@ -5,6 +5,7 @@ public class Dish {
     private String name;
     private String description;
     private String dishType;
+    private double dishPrice;
 
     public Dish() {
     }
@@ -14,6 +15,14 @@ public class Dish {
         this.name = name;
         this.description = description;
         this.dishType = dishType;
+    }
+
+    public Dish(int id, String name, String description, String dishType, double dishPrice) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.dishType = dishType;
+        this.dishPrice = dishPrice;
     }
 
     public int getId() {
@@ -46,5 +55,13 @@ public class Dish {
 
     public void setDishType(String dishType) {
         this.dishType = dishType;
+    }
+
+    public double getDishPrice() {
+        return dishPrice;
+    }
+
+    public void setDishPrice(double dishPrice) {
+        this.dishPrice = dishPrice;
     }
 }
