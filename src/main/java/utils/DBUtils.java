@@ -172,7 +172,7 @@ public class DBUtils {
     }
 
     public static List<Dish> queryProduct(Connection conn) throws SQLException {
-        String sql = "SELECT iddishes, name, description, dishtype FROM cafejavacore.dishes";
+        String sql = "SELECT iddishes, name, description, dishtype, dish_price FROM cafejavacore.dishes";
         if (log.isDebugEnabled()) log.debug("call sql request, sql = " + sql);
 
         PreparedStatement pstm = conn.prepareStatement(sql);
@@ -196,11 +196,15 @@ public class DBUtils {
             String dishType = rs.getString("dishtype");
             if (log.isDebugEnabled()) log.debug("get dish type, type =  " + dishType);
 
+            double dishPrice = rs.getDouble("dish_price");
+            if (log.isDebugEnabled()) log.debug("get dish price, price = " + dishPrice);
+
             Dish dish = new Dish();
             dish.setId(id);
             dish.setName(name);
             dish.setDescription(description);
             dish.setDishType(dishType);
+            dish.setDishPrice(dishPrice);
             if (log.isDebugEnabled()) log.debug("create a dish instance");
 
             list.add(dish);
