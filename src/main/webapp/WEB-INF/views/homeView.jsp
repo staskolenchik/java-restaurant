@@ -19,7 +19,10 @@
          <li>Login</li>
          <li>Storing user information in cookies</li>
          <li>Register new user</li>
-         <li>Control access system, where customer can only watch dishes and admin have rights to CRUD functions</li>
+         <li>Control access system, where customer can only watch dishes and admin
+         have rights to CRUD functions</li>
+         <li>administrator login: admin; password: admin</li>
+         <a href="admin">admin page</a>
       </ul>
 
      <jsp:include page="_footer.jsp"></jsp:include>
