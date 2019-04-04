@@ -1,6 +1,3 @@
 .idea
 java-restaurant.iml
-target/
-target
-/target/
-/target
+target/*
