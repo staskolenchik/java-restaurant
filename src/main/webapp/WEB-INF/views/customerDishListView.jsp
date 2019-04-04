@@ -20,13 +20,13 @@
        <tr>
           <th>Name</th>
           <th>Description</th>
-
+          <th>Price</th>
        </tr>
        <c:forEach items="${dishList}" var="dish" >
           <tr>
              <td>${dish.name}</td>
              <td>${dish.description}</td>
-
+             <td>${dish.dishPrice}</td>
           </tr>
        </c:forEach>
     </table>
