@@ -20,6 +20,8 @@ import java.util.List;
 @WebServlet(urlPatterns = { "/dishes" })
 public class CustomerDishListServlet extends HttpServlet {
 
+    private final String CUSTOMER_DISH_LIST_VIEW = "/WEB-INF/views/customerDishListView.jsp";
+
     public static final Logger log =
             Logger.getLogger(ClassNameUtils.getCurrentClassName());
 
@@ -48,9 +50,9 @@ public class CustomerDishListServlet extends HttpServlet {
         if (log.isDebugEnabled()) log.debug("store attribute of dish list");
 
         RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/WEB-INF/views/customerDishListView.jsp");
+                .getRequestDispatcher(CUSTOMER_DISH_LIST_VIEW);
         dispatcher.forward(request, response);
-        log.info("forward request to /WEB-INF/views/customerDishListView.jsp");
+        log.info("forward request to " + CUSTOMER_DISH_LIST_VIEW);
     }
 
     @Override
