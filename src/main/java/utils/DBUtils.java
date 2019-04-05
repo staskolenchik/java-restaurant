@@ -289,7 +289,7 @@ public class DBUtils {
     }
 
     public static void insertProduct(Connection conn, Dish dish) throws SQLException {
-        String sql = "INSERT INTO cafejavacore.dishes(name, description, dishtype) VALUES (?,?,?)";
+        String sql = "INSERT INTO cafejavacore.dishes(name, description, dishtype, dish_price) VALUES (?,?,?,?)";
         if (log.isDebugEnabled()) log.debug("call sql request, sql = " + sql);
 
         PreparedStatement pstm = conn.prepareStatement(sql);
@@ -306,6 +306,10 @@ public class DBUtils {
         pstm.setString(3, dish.getDishType());
         if (log.isDebugEnabled()) log.debug("set the third parameter of prepared statement as dish type, " +
                 "type  = " + dish.getDishType());
+
+        pstm.setDouble(4, dish.getDishPrice());
+        if (log.isDebugEnabled()) log.debug("set the forth parameter of prepared statement as dish price, " +
+                "price  = " + dish.getDishPrice());
 
         log.info("create dish in data base with dish name = " + dish.getName());
         pstm.executeUpdate();

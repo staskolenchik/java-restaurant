@@ -40,6 +40,10 @@
                </td>
             </tr>
             <tr>
+                    <td>Price</td>
+                    <td><input type="text" name="dishPrice" value="${dish.dishPrice}" /></td>
+                </tr>
+            <tr>
                <td colspan="2">
                    <input type="submit" value="Submit" />
                    <a href="dishes">Cancel</a>
