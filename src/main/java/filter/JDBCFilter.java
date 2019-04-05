@@ -105,10 +105,10 @@ public class JDBCFilter implements Filter{
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error("data base access error " + e);
-                ConnectionUtils.rollbackQuietly(conn);
+                if (conn != null) ConnectionUtils.rollbackQuietly(conn);
                 throw new ServletException();
             } finally {
-                ConnectionUtils.closeQuietly(conn);
+                if (conn != null) ConnectionUtils.closeQuietly(conn);
             }
         }
         // With commons requests (images, css, html, ..)

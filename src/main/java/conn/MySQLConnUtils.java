@@ -11,6 +11,14 @@ import java.util.Properties;
 
 public class MySQLConnUtils {
 
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            System.err.println("Driver class wasn't found " + e);
+        }
+    }
+
     public static final Logger log =
             Logger.getLogger(ClassNameUtils.getCurrentClassName());
 
