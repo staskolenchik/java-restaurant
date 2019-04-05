@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 
 @WebServlet(urlPatterns = { "/editDish" })
@@ -75,6 +76,7 @@ public class EditProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         Connection conn = MyUtils.getStoredConnection(request);
+        String errorString = null;
 
         int id = Integer.parseInt(request.getParameter("id"));
         if (log.isDebugEnabled()) log.debug("get request parameter id = " + id);
@@ -88,10 +90,28 @@ public class EditProductServlet extends HttpServlet {
         String dishType = request.getParameter("dishType");
         if (log.isDebugEnabled()) log.debug("get request parameter dish type = " + dishType);
 
-        Dish dish = new Dish(id, name, description, dishType);
+        String dishPriceStr = request.getParameter("dishPrice");
+        if (log.isDebugEnabled()) log.debug("get request parameter dish type = " + dishPriceStr);
+
+        double dishPrice = 0.0;
+        try {
+            dishPrice = Double.parseDouble(dishPriceStr);
+        } catch (Exception e) {
+            errorString = "Price format insert is incorrect, please insert price in \"0.0\" format";
+            log.error(errorString);
+
+            request.setAttribute("errorString", errorString);
+
+            RequestDispatcher dispatcher = request.getServletContext()
+                    .getRequestDispatcher("/WEB-INF/views/editDishView.jsp");
+            dispatcher.forward(request, response);
+            log.error("forward with error message to page /WEB-INF/views/editDishView.jsp");
+            return;
+        }
+
+        Dish dish = new Dish(id, name, description, dishType, dishPrice);
         if (log.isDebugEnabled()) log.debug("create new dish instance");
 
-        String errorString = null;
 
         try {
             DBUtils.updateProduct(conn, dish);

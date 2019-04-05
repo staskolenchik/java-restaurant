@@ -216,7 +216,7 @@ public class DBUtils {
     }
 
     public static Dish findProduct(Connection conn, int id) throws SQLException {
-        String sql = "SELECT iddishes, name, description, dishtype " +
+        String sql = "SELECT iddishes, name, description, dishtype, dish_price " +
                 "FROM cafejavacore.dishes WHERE iddishes=?";
         if (log.isDebugEnabled()) log.debug("call sql request, sql = " + sql);
 
@@ -244,7 +244,10 @@ public class DBUtils {
             String dishType = rs.getString("dishtype");
             if (log.isDebugEnabled()) log.debug("get dish type, type =  " + dishType);
 
-            Dish dish = new Dish(idDishes, name, description, dishType);
+            double dishPrice = rs.getDouble("dish_price");
+            if (log.isDebugEnabled()) log.debug("get dish price, price =  " + dishPrice);
+
+            Dish dish = new Dish(idDishes, name, description, dishType, dishPrice);
             if (log.isDebugEnabled()) log.debug("create a dish instance");
 
             log.info("pass the dish, existing in data base with  dish id = " + id);
@@ -255,7 +258,7 @@ public class DBUtils {
     }
 
     public static void updateProduct(Connection conn, Dish dish) throws SQLException {
-        String sql = "UPDATE cafejavacore.dishes SET name =?, description=?, dishtype=? " +
+        String sql = "UPDATE cafejavacore.dishes SET name =?, description=?, dishtype=?, dish_price=? " +
                 "WHERE iddishes=? ";
         if (log.isDebugEnabled()) log.debug("call sql request, sql = " + sql);
 
@@ -273,7 +276,11 @@ public class DBUtils {
         if (log.isDebugEnabled()) log.debug("set the third parameter of prepared statement as dish type, " +
                 "type  = " + dish.getDishType());
 
-        pstm.setInt(4, dish.getId());
+        pstm.setDouble(4, dish.getDishPrice());
+        if (log.isDebugEnabled()) log.debug("set the third parameter of prepared statement as dish price, " +
+                "price  = " + dish.getDishPrice());
+
+        pstm.setInt(5, dish.getId());
         if (log.isDebugEnabled()) log.debug("set the forth parameter of prepared statement as dish id, " +
                 "id = " + dish.getId());
 
