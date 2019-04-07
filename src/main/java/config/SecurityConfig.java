@@ -31,6 +31,7 @@ public class SecurityConfig {
         urlPatterns2.add("/editDish");
         urlPatterns2.add("/createDish");
         urlPatterns2.add("/deleteDish");
+        urlPatterns2.add("/orders");
 
         mapConfig.put(ROLE_ADMIN, urlPatterns2);
     }

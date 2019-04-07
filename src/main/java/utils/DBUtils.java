@@ -1,7 +1,6 @@
 package utils;
 
-import beans.Dish;
-import beans.UserAccount;
+import beans.*;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -328,5 +327,30 @@ public class DBUtils {
 
         log.info("delete dish in data base with dish id = " + id);
         pstm.executeUpdate();
+    }
+
+    public static List<Order> getOrderList(Connection connection) throws SQLException {
+        List<Order> orderList = new ArrayList<>();
+        String SQL = "SELECT id_orders, username,name,quantity_order,date_order,total_price_order " +
+                "FROM cafejavacore.orders, cafejavacore.users, cafejavacore.dishes \n" +
+                "WHERE users_idusers_fk=idusers AND dishes_iddishes=iddishes";
+
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            int orderId = rs.getInt(1 );
+            String orderUserName = rs.getString(2);
+            String orderDishName = rs.getString(3);
+            byte orderQuantity = rs.getByte(4);
+            java.sql.Timestamp orderDateStr = rs.getTimestamp(5);
+            String orderDate = orderDateStr.toString();
+            double orderTotalPrice = rs.getDouble(6);
+
+            Order order = new Order(orderId,orderUserName,orderDishName,orderQuantity,
+                    orderDate,orderTotalPrice);
+
+            orderList.add(order);
+        }
+        return orderList;
     }
 }
