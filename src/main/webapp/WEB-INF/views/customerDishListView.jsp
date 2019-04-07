@@ -27,6 +27,9 @@
              <td>${dish.name}</td>
              <td>${dish.description}</td>
              <td>${dish.dishPrice}</td>
+             <td>
+                <a href="dish-order?id=${dish.id}>Order</a>
+             </td>
           </tr>
        </c:forEach>
     </table>
