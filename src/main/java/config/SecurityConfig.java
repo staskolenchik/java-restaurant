@@ -20,6 +20,7 @@ public class SecurityConfig {
 
         urlPatterns1.add("/userInfo");
         urlPatterns1.add("/dishes");
+        urlPatterns1.add("/dish-order");
 
         mapConfig.put(ROLE_CUSTOMER, urlPatterns1);
 

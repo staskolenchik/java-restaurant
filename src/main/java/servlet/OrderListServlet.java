@@ -1,6 +1,8 @@
 package servlet;
 
 import beans.Order;
+import org.apache.log4j.Logger;
+import utils.ClassNameUtils;
 import utils.DBUtils;
 import utils.MyUtils;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @WebServlet ("/orders")
 public class OrderListServlet extends HttpServlet {
 
+    private static final Logger log = Logger.getLogger(ClassNameUtils.getCurrentClassName());
 
     private static final String ORDER_VIEW = "/WEB-INF/views/orderListView.jsp";
 
@@ -25,25 +28,38 @@ public class OrderListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Connection connection = MyUtils.getStoredConnection(request);
+        log.info("get stored connection from request");
 
         String errorString = null;
         List<Order> orderList = null;
 
         try {
             orderList = DBUtils.getOrderList(connection);
+            log.info("get order list from current connection to data base");
         } catch (SQLException e) {
             e.printStackTrace();
             errorString = "order list is empty";
+            log.error(e.getMessage());
         }
 
         request.setAttribute("errorString", errorString);
-
+        if (log.isDebugEnabled()) log.debug("set into request attribute errorString = " + errorString);
         request.setAttribute("orderList", orderList);
+        if (log.isDebugEnabled()) log.debug("set into request attribute orderList");
 
         RequestDispatcher requestDispatcher = request.getServletContext()
                 .getRequestDispatcher(ORDER_VIEW);
+        if (log.isDebugEnabled()) log.debug("create request dispatcher instance for view page = " +
+                                            ORDER_VIEW);
         requestDispatcher.forward(request,response);
+        log.info("forward request and response to order view page = " + ORDER_VIEW);
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request,response);
+        if (log.isDebugEnabled()) log.debug("invoke doGet OrderViewList servlet method");
     }
 
 

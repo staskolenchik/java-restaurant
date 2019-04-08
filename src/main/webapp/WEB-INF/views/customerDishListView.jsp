@@ -12,7 +12,7 @@
     <jsp:include page="_header.jsp"></jsp:include>
     <jsp:include page="_menu.jsp"></jsp:include>
 
-    <h3>Dish List!</h3>
+    <h3>Dish List</h3>
 
     <p style="color: red;">${errorString}</p>
 
@@ -21,6 +21,7 @@
           <th>Name</th>
           <th>Description</th>
           <th>Price</th>
+          <th></th>
        </tr>
        <c:forEach items="${dishList}" var="dish" >
           <tr>
@@ -28,7 +29,7 @@
              <td>${dish.description}</td>
              <td>${dish.dishPrice}</td>
              <td>
-                <a href="dish-order?id=${dish.id}>Order</a>
+                <a href="dish-order?id=${dish.id}">Order</a>
              </td>
           </tr>
        </c:forEach>

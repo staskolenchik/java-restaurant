@@ -7,8 +7,17 @@ public class Order {
     private byte orderQuantity;
     private String orderDate;
     private double orderTotalCost;
+    private int orderUserId;
+    private int orderDishId;
 
     public Order() {
+    }
+
+    public Order(byte orderQuantity, double orderTotalCost, int orderUserId, int orderDishId) {
+        this.orderQuantity = orderQuantity;
+        this.orderTotalCost = orderTotalCost;
+        this.orderUserId = orderUserId;
+        this.orderDishId = orderDishId;
     }
 
     public Order(int orderId, String orderUserName, String orderDishName,
@@ -67,5 +76,21 @@ public class Order {
 
     public void setOrderTotalCost(double orderTotalCost) {
         this.orderTotalCost = orderTotalCost;
+    }
+
+    public int getOrderUserId() {
+        return orderUserId;
+    }
+
+    public void setOrderUserId(int orderUserId) {
+        this.orderUserId = orderUserId;
+    }
+
+    public int getOrderDishId() {
+        return orderDishId;
+    }
+
+    public void setOrderDishId(int orderDishId) {
+        this.orderDishId = orderDishId;
     }
 }

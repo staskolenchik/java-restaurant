@@ -3,10 +3,7 @@ package utils;
 import beans.*;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -336,21 +333,72 @@ public class DBUtils {
                 "WHERE users_idusers_fk=idusers AND dishes_iddishes=iddishes";
 
         PreparedStatement pstm = connection.prepareStatement(SQL);
+        if (log.isDebugEnabled()) log.debug("create prepared statement object from sql request, sql = " + SQL);
+
         ResultSet rs = pstm.executeQuery();
+        if (log.isDebugEnabled()) log.debug("create an instance of result set");
+
         while (rs.next()) {
             int orderId = rs.getInt(1 );
+            if (log.isDebugEnabled()) log.debug("get order id = " + orderId);
+
             String orderUserName = rs.getString(2);
+            if (log.isDebugEnabled()) log.debug("get order user name = " + orderUserName);
+
             String orderDishName = rs.getString(3);
+            if (log.isDebugEnabled()) log.debug("get order dish name = " + orderDishName);
+
             byte orderQuantity = rs.getByte(4);
+            if (log.isDebugEnabled()) log.debug("get order quantity = " + orderQuantity);
+
             java.sql.Timestamp orderDateStr = rs.getTimestamp(5);
             String orderDate = orderDateStr.toString();
-            double orderTotalPrice = rs.getDouble(6);
+            if (log.isDebugEnabled()) log.debug("get order date = " + orderDate);
+
+            double orderTotalCost = rs.getDouble(6);
+            if (log.isDebugEnabled()) log.debug("get order total cost = " + orderTotalCost);
+
 
             Order order = new Order(orderId,orderUserName,orderDishName,orderQuantity,
-                    orderDate,orderTotalPrice);
+                    orderDate,orderTotalCost);
+            if (log.isDebugEnabled()) log.debug("create order instance");
 
             orderList.add(order);
+            if (log.isDebugEnabled()) log.debug("add order instance into order list");
         }
+        log.info("return filled order list");
         return orderList;
+    }
+
+    public static void createOrder(Connection connection, Order order) throws SQLException {
+        String SQL = "INSERT INTO cafejavacore.orders(users_idusers_fk, quantity_order, " +
+                "total_price_order, dishes_iddishes) \n" +
+                "VALUES (?,?,?,?);";
+
+        PreparedStatement prst = connection.prepareStatement(SQL);
+        if (log.isDebugEnabled()) log.debug("create prepared statement object from sql request, sql = " + SQL);
+
+
+        prst.setInt(1, order.getOrderUserId());
+        if (log.isDebugEnabled()) log.debug("set 1 parameter of prepared statement " +
+                "OrderUserId = " + order.getOrderUserId());
+
+
+        prst.setInt(2, order.getOrderQuantity());
+        if (log.isDebugEnabled()) log.debug("set 2 parameter of prepared statement " +
+                "OrderQuantity = " + order.getOrderQuantity());
+
+
+        prst.setDouble(3, order.getOrderTotalCost());
+        if (log.isDebugEnabled()) log.debug("set 3 parameter of prepared statement " +
+                "OrderTotalCost = " + order.getOrderTotalCost());
+
+
+        prst.setInt(4, order.getOrderDishId());
+        if (log.isDebugEnabled()) log.debug("set 4 parameter of prepared statement " +
+                "OrderDishId = " + order.getOrderDishId());
+
+        prst.executeUpdate();
+        log.info("create order in data base with order id = " + order.getOrderId());
     }
 }
