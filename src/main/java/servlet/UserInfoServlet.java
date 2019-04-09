@@ -1,8 +1,10 @@
 package servlet;
 
+import beans.Dish;
 import beans.UserAccount;
 import org.apache.log4j.Logger;
 import utils.ClassNameUtils;
+import utils.DBUtils;
 import utils.MyUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -13,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(urlPatterns = { "/userInfo" })
 public class UserInfoServlet extends HttpServlet {
@@ -32,6 +37,9 @@ public class UserInfoServlet extends HttpServlet {
         if (log.isDebugEnabled()) log.debug("get session from request");
 
         UserAccount loginedUser = MyUtils.getLoginedUser(session);
+        Connection connection = MyUtils.getStoredConnection(request);
+        List<Dish> orderedDishList = null;
+        String errorString = null;
 
         // Not logged in
         if (loginedUser == null) {
@@ -40,6 +48,35 @@ public class UserInfoServlet extends HttpServlet {
             return;
         }
 
+        try {
+            orderedDishList = DBUtils.getOrderedDishList(connection, loginedUser);
+            log.info("get ordered dish list from data base");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            errorString = "You don't have any orders yet";
+            log.error(e.getMessage());
+        }
+
+        Double orderTotalCost = null;
+
+        try {
+            orderTotalCost = DBUtils.getOrderedTotalCost(connection, loginedUser);
+            log.info("get ordered dish total cost from data base, total cost = " + orderTotalCost);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            errorString = "Total cost error";
+            log.error(e.getMessage());
+        }
+
+        request.setAttribute("orderTotalCost",orderTotalCost);
+        if (log.isDebugEnabled()) log.debug("set into request order total cost = " + orderTotalCost);
+
+        request.setAttribute("errorString",errorString);
+        if (log.isDebugEnabled()) log.debug("set into request errorString = " + errorString);
+
+        request.setAttribute("orderedDishList", orderedDishList);
+        if (log.isDebugEnabled()) log.debug("set into request ordered dish list");
+
         request.setAttribute("user", loginedUser);
         if (log.isDebugEnabled()) log.debug("store logined user attribute");
         // If the user has logged in, then forward to the page
@@ -47,7 +84,7 @@ public class UserInfoServlet extends HttpServlet {
         RequestDispatcher dispatcher //
                 = this.getServletContext().getRequestDispatcher("/WEB-INF/views/userInfoView.jsp");
         dispatcher.forward(request, response);
-        log.info("forward logined user to page /WEB-INF/views/userInfoView.jsp");
+        log.info("forward to page /WEB-INF/views/userInfoView.jsp");
 
     }
 

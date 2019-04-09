@@ -401,4 +401,50 @@ public class DBUtils {
         prst.executeUpdate();
         log.info("create order in data base with order id = " + order.getOrderId());
     }
+
+    public static List<Dish> getOrderedDishList(Connection connection, UserAccount loginedUser) throws SQLException {
+        String SQL = "SELECT name, description,dishtype, dish_price\n" +
+                "FROM cafejavacore.dishes, cafejavacore.orders\n" +
+                "WHERE users_idusers_fk = ? AND iddishes=dishes_iddishes";
+
+        int userId = loginedUser.getId();
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+        pstm.setInt(1, userId);
+
+        List<Dish> orderedDishList = new ArrayList<>();
+
+        ResultSet resultSet = pstm.executeQuery();
+        while (resultSet.next()) {
+            String dishName = resultSet.getString(1);
+            String dishDescription = resultSet.getString(2);
+            String dishType  = resultSet.getString(3);
+            Double dishPrice  = resultSet.getDouble(4);
+
+            Dish dish = new Dish();
+            dish.setName(dishName);
+            dish.setDescription(dishDescription);
+            dish.setDishType(dishType);
+            dish.setDishPrice(dishPrice);
+
+            orderedDishList.add(dish);
+        }
+        return orderedDishList;
+    }
+
+    public static double getOrderedTotalCost(Connection connection, UserAccount loginedUser) throws SQLException {
+        String SQL = "SELECT SUM(total_price_order)\n" +
+                "FROM cafejavacore.orders \n" +
+                "WHERE users_idusers_fk = ?";
+
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+        int userID = loginedUser.getId();
+        pstm.setInt(1, userID);
+
+        ResultSet resultSet = pstm.executeQuery();
+        Double orderTotalCost = null;
+        while (resultSet.next()) {
+            orderTotalCost = resultSet.getDouble(1);
+        }
+        return orderTotalCost;
+    }
 }
