@@ -3,6 +3,8 @@
 
 <div style="padding: 5px;">
 
+    <a href="${pageContext.request.contextPath}/home">Home</a>
+   |
    <a href="${pageContext.request.contextPath}/logout">Logout</a>
    |
    <a href="${pageContext.request.contextPath}/admin">Admin Options</a>

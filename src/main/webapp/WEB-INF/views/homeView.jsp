@@ -23,6 +23,8 @@
          have rights to CRUD functions</li>
          <li>administrator login: admin; password: admin</li>
          <a href="admin">admin page</a>
+         <li>kitchen login: kitchen; password: kitchen</li>
+         <a href="kitchen">kitchen page</a>
       </ul>
 
      <jsp:include page="_footer.jsp"></jsp:include>

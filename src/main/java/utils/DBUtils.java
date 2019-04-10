@@ -447,4 +447,30 @@ public class DBUtils {
         }
         return orderTotalCost;
     }
+
+    public static List<Dish> getKitchenDishList(Connection connection) throws SQLException {
+        String SQL = "SELECT name, description,dishtype\n" +
+                "FROM cafejavacore.dishes, cafejavacore.orders\n" +
+                "WHERE iddishes=dishes_iddishes";
+
+        List<Dish> kitchenDishList = new ArrayList<>();
+
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+        ResultSet resultSet = pstm.executeQuery();
+
+        while (resultSet.next()) {
+            String dishName = resultSet.getString(1);
+            String dishDescription = resultSet.getString(2);
+            String dishType = resultSet.getString(3);
+
+            Dish dish = new Dish();
+            dish.setName(dishName);
+            dish.setDescription(dishDescription);
+            dish.setDishType(dishType);
+
+            kitchenDishList.add(dish);
+        }
+
+        return kitchenDishList;
+    }
 }
