@@ -1,6 +1,7 @@
 package servlet;
 
 import beans.Dish;
+import beans.sql_request.Kitchen;
 import utils.DBUtils;
 import utils.MyUtils;
 
@@ -25,9 +26,9 @@ public class KitchenServlet extends HttpServlet {
             throws ServletException, IOException {
         Connection connection = MyUtils.getStoredConnection(request);
 
-        List<Dish> kitchenDishList = null;
+        List<Kitchen> kitchenDishList = null;
         try {
-            kitchenDishList = DBUtils.getKitchenDishList(connection);
+            kitchenDishList = DBUtils.getFullKitchenDishList(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,6 +43,28 @@ public class KitchenServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request,response);
+        Connection connection = MyUtils.getStoredConnection(request);
+
+        int orderId = Integer.parseInt(request.getParameter("id"));
+
+        try {
+            DBUtils.updateOrderStatusToReady(connection, orderId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        List<Kitchen> fullKitchenList = null;
+
+        try {
+            fullKitchenList = DBUtils.getFullKitchenDishList(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        request.setAttribute("kitchenDishList", fullKitchenList);
+
+        RequestDispatcher dispatcher =
+                request.getServletContext().getRequestDispatcher(KITCHEN_DISH_LIST_VIEW_PAGE);
+        dispatcher.forward(request,response);
     }
 }

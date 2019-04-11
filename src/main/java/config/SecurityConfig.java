@@ -6,6 +6,7 @@ public class SecurityConfig {
 
     public static final String ROLE_CUSTOMER = "customer";
     public static final String ROLE_ADMIN = "admin";
+    public static final String ROLE_KITCHEN = "kitchen";
 
     private  static final Map<String, List<String>> mapConfig = new HashMap<>();
 
@@ -35,6 +36,14 @@ public class SecurityConfig {
         urlPatterns2.add("/orders");
 
         mapConfig.put(ROLE_ADMIN, urlPatterns2);
+
+        //configure for kitchen role;
+        List<String> urlPatterns3 = new ArrayList<>();
+
+        urlPatterns3.add("/kitchen");
+        urlPatterns2.add("/userInfo");
+
+        mapConfig.put(ROLE_KITCHEN, urlPatterns3);
     }
 
     public static Set<String> getAllAppRoles() {

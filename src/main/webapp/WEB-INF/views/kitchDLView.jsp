@@ -16,25 +16,31 @@
 
     <p style="color: red;">${errorString}</p>
 
-    <table border="1" cellpadding="5" cellspacing="1" >
-       <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Dish Type</th>
-          <th></th>
-       </tr>
-       <c:forEach items="${dishList}" var="dish" >
-          <tr>
-             <td>${dish.name}</td>
-             <td>${dish.description}</td>
-             <td>${dish.dishType}</td>
-             <td>
-
-             </td>
-
-          </tr>
-       </c:forEach>
-    </table>
+    <form method="POST" action="${pageContext.request.contextPath}/kitchen">
+        <table border="1" cellpadding="5" cellspacing="1" >
+           <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Dish Type</th>
+              <th>Quantity</th>
+              <th>Status</th>
+              <th></th>
+           </tr>
+           <c:forEach items="${kitchenDishList}" var="kitchen" >
+           <input type="hidden" name="id" value="${kitchen.kitchenId}" />
+              <tr>
+                 <td>${kitchen.kitchenName}</td>
+                 <td>${kitchen.kitchenDescription}</td>
+                 <td>${kitchen.kitchenType}</td>
+                 <td>${kitchen.kitchenQuantity}</td>
+                 <td>${kitchen.kitchenStatus}</td>
+                 <td>
+                    <input type="submit" value="Ready" />
+                 </td>
+              </tr>
+           </c:forEach>
+        </table>
+    </form>
 
     <jsp:include page="_footer.jsp"></jsp:include>
 

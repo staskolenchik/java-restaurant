@@ -1,6 +1,7 @@
 package utils;
 
 import beans.*;
+import beans.sql_request.Kitchen;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -472,5 +473,42 @@ public class DBUtils {
         }
 
         return kitchenDishList;
+    }
+
+    public static List<Kitchen> getFullKitchenDishList(Connection connection) throws SQLException {
+        String SQL = "SELECT id_orders,name, description,dishtype, quantity_order,status_order\n" +
+                "FROM cafejavacore.dishes, cafejavacore.orders\n" +
+                "WHERE iddishes=dishes_iddishes and status_order = 'preparing'";
+
+        List<Kitchen> fullKitchenDishList = new ArrayList<>();
+
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            int orderId = rs.getInt(1);
+            String dishName = rs.getString(2);
+            String dishDescription = rs.getString(3);
+            String dishType = rs.getString(4);
+            byte orderQuantity = rs.getByte(5);
+            String orderStatus = rs.getString(6);
+
+            Kitchen kitchen = new Kitchen(orderId, dishName, dishDescription, dishType,
+                                            orderQuantity,orderStatus);
+            fullKitchenDishList.add(kitchen);
+        }
+
+        return fullKitchenDishList;
+    }
+
+    public static void updateOrderStatusToReady(Connection connection, int orderId) throws SQLException {
+        String SQL = "UPDATE cafejavacore.orders SET status_order = 'ready' " +
+                    "WHERE (id_orders = ?)";
+
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+
+        pstm.setInt(1,orderId);
+
+        pstm.executeUpdate();
     }
 }

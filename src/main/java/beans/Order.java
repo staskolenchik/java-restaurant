@@ -9,6 +9,7 @@ public class Order {
     private double orderTotalCost;
     private int orderUserId;
     private int orderDishId;
+    private String orderStatus;
 
     public Order() {
     }
@@ -28,6 +29,14 @@ public class Order {
         this.orderQuantity = orderQuantity;
         this.orderDate = orderDate;
         this.orderTotalCost = orderTotalCost;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public int getOrderId() {

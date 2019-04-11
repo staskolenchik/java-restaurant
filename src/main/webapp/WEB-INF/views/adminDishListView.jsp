@@ -23,6 +23,7 @@
           <th>Name</th>
           <th>Description</th>
           <th>Price</th>
+          <th>Status</th>
           <th>Edit</th>
           <th>Delete</th>
        </tr>
@@ -30,6 +31,7 @@
           <tr>
              <td>${dish.name}</td>
              <td>${dish.description}</td>
+             <td>${dish.dishPrice}</td>
              <td>${dish.dishPrice}</td>
              <td>
                 <a href="editDish?id=${dish.id}">Edit</a>
