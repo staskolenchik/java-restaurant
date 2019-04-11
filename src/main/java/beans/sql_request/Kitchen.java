@@ -1,71 +1,47 @@
 package beans.sql_request;
 
+import beans.Dish;
+import beans.Order;
+
 public class Kitchen {
-    private int kitchenId;
-    private String kitchenName;
-    private String kitchenDescription;
-    private String kitchenType;
-    private byte kitchenQuantity;
-    private String kitchenStatus;
 
-    public Kitchen() {
+    private Dish dish;
+    private Order order;
+
+    public Kitchen(int orderId, String dishName, String dishDescription, String dishType,
+                   byte orderQuantity, String orderStatus) {
+        this.dish = new Dish();
+        this.order = new Order();
+        order.setOrderId(orderId);
+        dish.setName(dishName);
+        dish.setDescription(dishDescription);
+        dish.setDishType(dishType);
+        order.setOrderQuantity(orderQuantity);
+        order.setOrderStatus(orderStatus);
     }
 
-    public Kitchen(int kitchenId, String kitchenName, String kitchenDescription, String kitchenType,
-                   byte kitchenQuantity, String kitchenStatus) {
-        this.kitchenId = kitchenId;
-        this.kitchenName = kitchenName;
-        this.kitchenDescription = kitchenDescription;
-        this.kitchenType = kitchenType;
-        this.kitchenQuantity = kitchenQuantity;
-        this.kitchenStatus = kitchenStatus;
+    public int getOrderId() {
+        return order.getOrderId();
     }
 
-    public int getKitchenId() {
-        return kitchenId;
+    public String getDishName() {
+        return dish.getName();
     }
 
-    public void setKitchenId(int kitchenId) {
-        this.kitchenId = kitchenId;
+    public String getDishDescription() {
+        return dish.getDescription();
     }
 
-    public String getKitchenName() {
-        return kitchenName;
+    public String getDishType() {
+        return dish.getDishType();
     }
 
-    public void setKitchenName(String kitchenName) {
-        this.kitchenName = kitchenName;
+    public byte getOrderQuantity() {
+        return order.getOrderQuantity();
     }
 
-    public String getKitchenDescription() {
-        return kitchenDescription;
+    public String getOrderStatus() {
+        return order.getOrderStatus();
     }
 
-    public void setKitchenDescription(String kitchenDescription) {
-        this.kitchenDescription = kitchenDescription;
-    }
-
-    public String getKitchenType() {
-        return kitchenType;
-    }
-
-    public void setKitchenType(String kitchenType) {
-        this.kitchenType = kitchenType;
-    }
-
-    public byte getKitchenQuantity() {
-        return kitchenQuantity;
-    }
-
-    public void setKitchenQuantity(byte kitchenQuantity) {
-        this.kitchenQuantity = kitchenQuantity;
-    }
-
-    public String getKitchenStatus() {
-        return kitchenStatus;
-    }
-
-    public void setKitchenStatus(String kitchenStatus) {
-        this.kitchenStatus = kitchenStatus;
-    }
 }

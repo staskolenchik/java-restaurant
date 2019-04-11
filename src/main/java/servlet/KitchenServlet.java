@@ -1,6 +1,6 @@
 package servlet;
 
-import beans.Dish;
+
 import beans.sql_request.Kitchen;
 import utils.DBUtils;
 import utils.MyUtils;
@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+
 @WebServlet ("/kitchen")
 public class KitchenServlet extends HttpServlet {
 
@@ -25,6 +26,7 @@ public class KitchenServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Connection connection = MyUtils.getStoredConnection(request);
+
 
         List<Kitchen> kitchenDishList = null;
         try {

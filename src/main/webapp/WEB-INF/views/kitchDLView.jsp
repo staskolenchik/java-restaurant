@@ -27,13 +27,13 @@
               <th></th>
            </tr>
            <c:forEach items="${kitchenDishList}" var="kitchen" >
-           <input type="hidden" name="id" value="${kitchen.kitchenId}" />
+           <input type="hidden" name="id" value="${kitchen.orderId}" />
               <tr>
-                 <td>${kitchen.kitchenName}</td>
-                 <td>${kitchen.kitchenDescription}</td>
-                 <td>${kitchen.kitchenType}</td>
-                 <td>${kitchen.kitchenQuantity}</td>
-                 <td>${kitchen.kitchenStatus}</td>
+                 <td>${kitchen.dishName}</td>
+                 <td>${kitchen.dishDescription}</td>
+                 <td>${kitchen.dishType}</td>
+                 <td>${kitchen.orderQuantity}</td>
+                 <td>${kitchen.orderStatus}</td>
                  <td>
                     <input type="submit" value="Ready" />
                  </td>
