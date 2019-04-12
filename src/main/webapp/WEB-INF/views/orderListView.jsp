@@ -15,7 +15,7 @@
     <h3>Order List</h3>
 
     <p style="color: red;">${errorString}</p>
-    <c:if test="${not empty orderList}">
+    <c:if test="${not empty adminList}">
         <table border="1" cellpadding="5" cellspacing="1" >
             <tr>
                 <th>Order Id</th>

@@ -26,7 +26,8 @@ public class OrderListServlet extends HttpServlet {
     private static final String ORDER_VIEW = "/WEB-INF/views/orderListView.jsp";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
         Connection connection = MyUtils.getStoredConnection(request);
         log.info("get stored connection from request");

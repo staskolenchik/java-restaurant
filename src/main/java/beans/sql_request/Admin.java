@@ -12,11 +12,11 @@ public class Admin {
 
     public Admin(int orderId, String userAccountName, String dishName,
                  double dishPrice, String orderDate,
-                 byte orderQuantity, double orderTotalPrice, String orderStatus) {
+                 byte orderQuantity, double orderTotalCost, String orderStatus) {
 
         this.userAccount = new UserAccount(userAccountName);
         this.dish = new Dish(dishName, dishPrice);
-        this.order = new Order(orderId, orderDate, orderQuantity, orderTotalPrice,orderStatus);
+        this.order = new Order(orderId, orderDate, orderQuantity, orderTotalCost,orderStatus);
     }
 
     public int getOrderId() {

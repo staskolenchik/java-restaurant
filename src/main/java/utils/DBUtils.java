@@ -450,7 +450,7 @@ public class DBUtils {
                 "FROM cafejavacore.dishes, cafejavacore.orders, cafejavacore.users\n" +
                 "WHERE (iddishes=dishes_iddishes AND users_idusers_fk=idusers) \n" +
                 "AND (status_order = 'queueing up' \n" +
-                "OR status_order ='ready');";
+                "OR status_order ='ready')";
 
         if (log.isDebugEnabled()) log.debug("call sql request, sql = " + sql);
 
@@ -483,14 +483,14 @@ public class DBUtils {
             byte orderQuantity = rs.getByte("quantity_order");
             if (log.isDebugEnabled()) log.debug("get order quantity = " + orderQuantity);
 
-            double orderTotalPrice = rs.getDouble("total_price_order");
-            if (log.isDebugEnabled()) log.debug("get order order total price = " + orderTotalPrice);
+            double orderTotalCost= rs.getDouble("total_price_order");
+            if (log.isDebugEnabled()) log.debug("get order order total price = " + orderTotalCost);
 
             String orderStatus = rs.getString("status_order");
             if (log.isDebugEnabled()) log.debug("get order status = " + orderStatus);
 
             Admin admin = new Admin(orderId, userAccountName, name, dishPrice, orderDate,
-                                    orderQuantity, orderTotalPrice, orderStatus);
+                                    orderQuantity, orderTotalCost, orderStatus);
 
             if (log.isDebugEnabled()) log.debug("create a admin instance");
 
