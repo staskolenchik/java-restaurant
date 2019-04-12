@@ -1,6 +1,7 @@
 package servlet;
 
 import beans.Order;
+import beans.sql_request.Admin;
 import org.apache.log4j.Logger;
 import utils.ClassNameUtils;
 import utils.DBUtils;
@@ -31,21 +32,21 @@ public class OrderListServlet extends HttpServlet {
         log.info("get stored connection from request");
 
         String errorString = null;
-        List<Order> orderList = null;
+        List<Admin> adminList = null;
 
         try {
-            orderList = DBUtils.getOrderList(connection);
-            log.info("get order list from current connection to data base");
+            adminList = DBUtils.getFullAdminDishList(connection);
+            log.info("get admin from current connection to data base");
         } catch (SQLException e) {
             e.printStackTrace();
             errorString = "order list is empty";
             log.error(e.getMessage());
         }
 
+        request.setAttribute("adminList", adminList);
+        if (log.isDebugEnabled()) log.debug("set into request attribute adminList");
         request.setAttribute("errorString", errorString);
         if (log.isDebugEnabled()) log.debug("set into request attribute errorString = " + errorString);
-        request.setAttribute("orderList", orderList);
-        if (log.isDebugEnabled()) log.debug("set into request attribute orderList");
 
         RequestDispatcher requestDispatcher = request.getServletContext()
                 .getRequestDispatcher(ORDER_VIEW);

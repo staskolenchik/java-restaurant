@@ -25,6 +25,11 @@ public class Dish {
         this.dishPrice = dishPrice;
     }
 
+    public Dish(String dishName, double dishPrice) {
+        this.name = dishName;
+        this.dishPrice = dishPrice;
+    }
+
     public int getId() {
         return id;
     }

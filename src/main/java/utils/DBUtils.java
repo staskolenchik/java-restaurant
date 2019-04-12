@@ -1,6 +1,7 @@
 package utils;
 
 import beans.*;
+import beans.sql_request.Admin;
 import beans.sql_request.Kitchen;
 import org.apache.log4j.Logger;
 
@@ -327,50 +328,6 @@ public class DBUtils {
         pstm.executeUpdate();
     }
 
-    public static List<Order> getOrderList(Connection connection) throws SQLException {
-        List<Order> orderList = new ArrayList<>();
-        String SQL = "SELECT id_orders, username,name,quantity_order,date_order,total_price_order " +
-                "FROM cafejavacore.orders, cafejavacore.users, cafejavacore.dishes \n" +
-                "WHERE users_idusers_fk=idusers AND dishes_iddishes=iddishes";
-
-        PreparedStatement pstm = connection.prepareStatement(SQL);
-        if (log.isDebugEnabled()) log.debug("create prepared statement object from sql request, sql = " + SQL);
-
-        ResultSet rs = pstm.executeQuery();
-        if (log.isDebugEnabled()) log.debug("create an instance of result set");
-
-        while (rs.next()) {
-            int orderId = rs.getInt(1 );
-            if (log.isDebugEnabled()) log.debug("get order id = " + orderId);
-
-            String orderUserName = rs.getString(2);
-            if (log.isDebugEnabled()) log.debug("get order user name = " + orderUserName);
-
-            String orderDishName = rs.getString(3);
-            if (log.isDebugEnabled()) log.debug("get order dish name = " + orderDishName);
-
-            byte orderQuantity = rs.getByte(4);
-            if (log.isDebugEnabled()) log.debug("get order quantity = " + orderQuantity);
-
-            java.sql.Timestamp orderDateStr = rs.getTimestamp(5);
-            String orderDate = orderDateStr.toString();
-            if (log.isDebugEnabled()) log.debug("get order date = " + orderDate);
-
-            double orderTotalCost = rs.getDouble(6);
-            if (log.isDebugEnabled()) log.debug("get order total cost = " + orderTotalCost);
-
-
-            Order order = new Order(orderId,orderUserName,orderDishName,orderQuantity,
-                    orderDate,orderTotalCost);
-            if (log.isDebugEnabled()) log.debug("create order instance");
-
-            orderList.add(order);
-            if (log.isDebugEnabled()) log.debug("add order instance into order list");
-        }
-        log.info("return filled order list");
-        return orderList;
-    }
-
     public static void createOrder(Connection connection, Order order) throws SQLException {
         String SQL = "INSERT INTO cafejavacore.orders(users_idusers_fk, quantity_order, " +
                 "total_price_order, dishes_iddishes) \n" +
@@ -449,32 +406,6 @@ public class DBUtils {
         return orderTotalCost;
     }
 
-    public static List<Dish> getKitchenDishList(Connection connection) throws SQLException {
-        String SQL = "SELECT name, description,dishtype\n" +
-                "FROM cafejavacore.dishes, cafejavacore.orders\n" +
-                "WHERE iddishes=dishes_iddishes";
-
-        List<Dish> kitchenDishList = new ArrayList<>();
-
-        PreparedStatement pstm = connection.prepareStatement(SQL);
-        ResultSet resultSet = pstm.executeQuery();
-
-        while (resultSet.next()) {
-            String dishName = resultSet.getString(1);
-            String dishDescription = resultSet.getString(2);
-            String dishType = resultSet.getString(3);
-
-            Dish dish = new Dish();
-            dish.setName(dishName);
-            dish.setDescription(dishDescription);
-            dish.setDishType(dishType);
-
-            kitchenDishList.add(dish);
-        }
-
-        return kitchenDishList;
-    }
-
     public static List<Kitchen> getFullKitchenDishList(Connection connection) throws SQLException {
         String SQL = "SELECT id_orders,name, description,dishtype, quantity_order,status_order\n" +
                 "FROM cafejavacore.dishes, cafejavacore.orders\n" +
@@ -510,5 +441,60 @@ public class DBUtils {
         pstm.setInt(1,orderId);
 
         pstm.executeUpdate();
+    }
+
+    public static List<Admin> getFullAdminDishList(Connection conn) throws SQLException {
+
+        String sql = "SELECT id_orders,username, name, dish_price,date_order, quantity_order,status_order\n" +
+                "FROM cafejavacore.dishes, cafejavacore.orders, cafejavacore.users\n" +
+                "WHERE (iddishes=dishes_iddishes AND users_idusers_fk=idusers) \n" +
+                "AND (status_order = 'queueing up' \n" +
+                "OR status_order ='ready')";
+
+        if (log.isDebugEnabled()) log.debug("call sql request, sql = " + sql);
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        if (log.isDebugEnabled()) log.debug("create prepared statement object from sql request, sql = " + sql);
+
+        ResultSet rs = pstm.executeQuery();
+        if (log.isDebugEnabled())
+            log.debug("execute a query of prepared statement for getting the result set of SQL data");
+
+        List<Admin> list = new ArrayList<>();
+
+        while (rs.next()) {
+            int orderId = rs.getInt(1);
+            if (log.isDebugEnabled()) log.debug("get order id =  " + orderId);
+
+            String userAccountName = rs.getString("username");
+            if (log.isDebugEnabled()) log.debug("get user name = " + userAccountName);
+
+            String name = rs.getString("name");
+            if (log.isDebugEnabled()) log.debug("get dish name, name =  " + name);
+
+            double dishPrice = rs.getDouble("dish_price");
+            if (log.isDebugEnabled()) log.debug("get dish price, price = " + dishPrice);
+
+            java.sql.Timestamp orderDateStr = rs.getTimestamp("date_order");
+            String orderDate = orderDateStr.toString();
+            if (log.isDebugEnabled()) log.debug("get order date = " + orderDate);
+
+            byte orderQuantity = rs.getByte("quantity_order");
+            if (log.isDebugEnabled()) log.debug("get order quantity = " + orderQuantity);
+
+            String orderStatus = rs.getString("status_order");
+            if (log.isDebugEnabled()) log.debug("get order status = " + orderStatus);
+
+            Admin admin = new Admin(orderId, userAccountName, name, dishPrice, orderDate,
+                                    orderQuantity, orderStatus);
+
+            if (log.isDebugEnabled()) log.debug("create a admin instance");
+
+            list.add(admin);
+            if (log.isDebugEnabled()) log.debug("add the admin instance into list of admin's instances");
+
+        }
+        log.info("pass a list of admins");
+        return list;
     }
 }

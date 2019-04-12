@@ -21,18 +21,21 @@
                 <th>Order Id</th>
                 <th>Client Name</th>
                 <th>Dish Name</th>
-                <th>Dish Quantity</th>
+                <th>Cost</th>
                 <th>Order Time</th>
-                <th>Total Cost</th>
+                <th>Dish Quantity</th>
+                <th>Order Status</th>
+
             </tr>
-            <c:forEach items="${orderList}" var="order" >
+            <c:forEach items="${adminList}" var="admin" >
             <tr>
-                <td>${order.orderId}</td>
-                <td>${order.orderUserName}</td>
-                <td>${order.orderDishName}</td>
-                <td>${order.orderQuantity}</td>
-                <td>${order.orderDate}</td>
-                <td>${order.orderTotalCost}</td>
+                <td>${admin.orderId}</td>
+                <td>${admin.userAccountName}</td>
+                <td>${admin.dishName}</td>
+                <td>${admin.dishPrice}</td>
+                <td>${admin.orderDate}</td>
+                <td>${admin.orderQuantity}</td>
+                <td>${admin.orderStatus}</td>
             </tr>
             </c:forEach>
         </table>

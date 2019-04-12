@@ -2,11 +2,8 @@ package beans;
 
 public class Order {
     private int orderId;
-    private String orderUserName;
-    private String orderDishName;
     private byte orderQuantity;
     private String orderDate;
-    private double orderTotalCost;
     private int orderUserId;
     private int orderDishId;
     private String orderStatus;
@@ -14,21 +11,23 @@ public class Order {
     public Order() {
     }
 
-    public Order(byte orderQuantity, double orderTotalCost, int orderUserId, int orderDishId) {
+    public Order(byte orderQuantity, int orderUserId, int orderDishId) {
         this.orderQuantity = orderQuantity;
-        this.orderTotalCost = orderTotalCost;
         this.orderUserId = orderUserId;
         this.orderDishId = orderDishId;
     }
 
-    public Order(int orderId, String orderUserName, String orderDishName,
-                 byte orderQuantity, String orderDate, double orderTotalCost) {
+    public Order(int orderId, byte orderQuantity, String orderDate, double orderTotalCost) {
         this.orderId = orderId;
-        this.orderUserName = orderUserName;
-        this.orderDishName = orderDishName;
         this.orderQuantity = orderQuantity;
         this.orderDate = orderDate;
-        this.orderTotalCost = orderTotalCost;
+    }
+
+    public Order(int orderId, String orderDate, byte orderQuantity, String orderStatus) {
+        this.orderId = orderId;
+        this.orderDate = orderDate;
+        this.orderQuantity = orderQuantity;
+        this.orderStatus = orderStatus;
     }
 
     public String getOrderStatus() {
@@ -47,22 +46,6 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public String getOrderUserName() {
-        return orderUserName;
-    }
-
-    public void setOrderUserName(String orderUserName) {
-        this.orderUserName = orderUserName;
-    }
-
-    public String getOrderDishName() {
-        return orderDishName;
-    }
-
-    public void setOrderDishName(String orderDishName) {
-        this.orderDishName = orderDishName;
-    }
-
     public byte getOrderQuantity() {
         return orderQuantity;
     }
@@ -77,14 +60,6 @@ public class Order {
 
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public double getOrderTotalCost() {
-        return orderTotalCost;
-    }
-
-    public void setOrderTotalCost(double orderTotalCost) {
-        this.orderTotalCost = orderTotalCost;
     }
 
     public int getOrderUserId() {
