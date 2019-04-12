@@ -445,11 +445,12 @@ public class DBUtils {
 
     public static List<Admin> getFullAdminDishList(Connection conn) throws SQLException {
 
-        String sql = "SELECT id_orders,username, name, dish_price,date_order, quantity_order,status_order\n" +
+        String sql = "SELECT id_orders,username, name, dish_price, date_order, quantity_order," +
+                "total_price_order, status_order\n" +
                 "FROM cafejavacore.dishes, cafejavacore.orders, cafejavacore.users\n" +
                 "WHERE (iddishes=dishes_iddishes AND users_idusers_fk=idusers) \n" +
                 "AND (status_order = 'queueing up' \n" +
-                "OR status_order ='ready')";
+                "OR status_order ='ready');";
 
         if (log.isDebugEnabled()) log.debug("call sql request, sql = " + sql);
 
@@ -482,11 +483,14 @@ public class DBUtils {
             byte orderQuantity = rs.getByte("quantity_order");
             if (log.isDebugEnabled()) log.debug("get order quantity = " + orderQuantity);
 
+            double orderTotalPrice = rs.getDouble("total_price_order");
+            if (log.isDebugEnabled()) log.debug("get order order total price = " + orderTotalPrice);
+
             String orderStatus = rs.getString("status_order");
             if (log.isDebugEnabled()) log.debug("get order status = " + orderStatus);
 
             Admin admin = new Admin(orderId, userAccountName, name, dishPrice, orderDate,
-                                    orderQuantity, orderStatus);
+                                    orderQuantity, orderTotalPrice, orderStatus);
 
             if (log.isDebugEnabled()) log.debug("create a admin instance");
 

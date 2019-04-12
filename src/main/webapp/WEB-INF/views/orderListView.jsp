@@ -21,9 +21,10 @@
                 <th>Order Id</th>
                 <th>Client Name</th>
                 <th>Dish Name</th>
-                <th>Cost</th>
+                <th>Dish Price</th>
                 <th>Order Time</th>
                 <th>Dish Quantity</th>
+                <th>Total Cost</th>
                 <th>Order Status</th>
 
             </tr>
@@ -35,6 +36,7 @@
                 <td>${admin.dishPrice}</td>
                 <td>${admin.orderDate}</td>
                 <td>${admin.orderQuantity}</td>
+                <td>${admin.orderTotalCost}</td>
                 <td>${admin.orderStatus}</td>
             </tr>
             </c:forEach>

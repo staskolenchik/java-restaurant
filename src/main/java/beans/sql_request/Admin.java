@@ -10,13 +10,13 @@ public class Admin {
     private Order order;
     private UserAccount userAccount;
 
-    public Admin(int orderId,String userAccountName, String dishName,
-                  double dishPrice, String orderDate,
-                 byte orderQuantity,String orderStatus) {
+    public Admin(int orderId, String userAccountName, String dishName,
+                 double dishPrice, String orderDate,
+                 byte orderQuantity, double orderTotalPrice, String orderStatus) {
 
         this.userAccount = new UserAccount(userAccountName);
         this.dish = new Dish(dishName, dishPrice);
-        this.order = new Order(orderId, orderDate, orderQuantity, orderStatus);
+        this.order = new Order(orderId, orderDate, orderQuantity, orderTotalPrice,orderStatus);
     }
 
     public int getOrderId() {
@@ -41,6 +41,10 @@ public class Admin {
 
     public byte getOrderQuantity() {
         return order.getOrderQuantity();
+    }
+
+    public double getOrderTotalCost() {
+        return order.getOrderTotalCost();
     }
 
     public String getOrderStatus() {
