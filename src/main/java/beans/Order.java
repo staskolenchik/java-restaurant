@@ -35,6 +35,22 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
+    public Order(int orderId, byte orderQuantity, double orderTotalCost, String orderStatus) {
+        this.orderId = orderId;
+        this.orderQuantity = orderQuantity;
+        this.orderTotalCost = orderTotalCost;
+        this.orderStatus = orderStatus;
+    }
+
+    public Order(byte orderQuantity, double orderTotalCost,
+                 int orderUserId, int orderDishId, String orderStatus) {
+        this.orderQuantity = orderQuantity;
+        this.orderTotalCost = orderTotalCost;
+        this.orderUserId = orderUserId;
+        this.orderDishId = orderDishId;
+        this.orderStatus = orderStatus;
+    }
+
     public String getOrderStatus() {
         return orderStatus;
     }

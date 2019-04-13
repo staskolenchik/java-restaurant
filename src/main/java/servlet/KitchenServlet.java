@@ -1,7 +1,7 @@
 package servlet;
 
 
-import beans.sql_request.Kitchen;
+import beans.sql_request_for.Kitchen;
 import utils.DBUtils;
 import utils.MyUtils;
 

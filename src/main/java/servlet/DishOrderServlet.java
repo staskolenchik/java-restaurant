@@ -85,7 +85,7 @@ public class DishOrderServlet extends HttpServlet {
         if (log.isDebugEnabled()) log.debug("get order total cost = " + orderTotalCost);
 
         String errorString = null;
-        Order order = new Order(orderQuantity, orderTotalCost,orderUserId, orderDishId);
+        Order order = new Order(orderQuantity, orderTotalCost,orderUserId, orderDishId, "queueing up");
         if (log.isDebugEnabled()) log.debug("create order instance");
 
         Dish dish = null;

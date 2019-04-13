@@ -1,8 +1,9 @@
 package utils;
 
 import beans.*;
-import beans.sql_request.Admin;
-import beans.sql_request.Kitchen;
+import beans.sql_request_for.Admin;
+import beans.sql_request_for.Kitchen;
+import beans.sql_request_for.User;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -330,8 +331,8 @@ public class DBUtils {
 
     public static void createOrder(Connection connection, Order order) throws SQLException {
         String SQL = "INSERT INTO cafejavacore.orders(users_idusers_fk, quantity_order, " +
-                "total_price_order, dishes_iddishes) \n" +
-                "VALUES (?,?,?,?);";
+                "total_price_order, dishes_iddishes, status_order) \n" +
+                "VALUES (?,?,?,?,?);";
 
         PreparedStatement prst = connection.prepareStatement(SQL);
         if (log.isDebugEnabled()) log.debug("create prepared statement object from sql request, sql = " + SQL);
@@ -355,6 +356,10 @@ public class DBUtils {
         prst.setInt(4, order.getOrderDishId());
         if (log.isDebugEnabled()) log.debug("set 4 parameter of prepared statement " +
                 "OrderDishId = " + order.getOrderDishId());
+
+        prst.setString(5, order.getOrderStatus());
+        if (log.isDebugEnabled()) log.debug("set 5 parameter of prepared statement " +
+                "order status = " + order.getOrderStatus());
 
         prst.executeUpdate();
         log.info("create order in data base with order id = " + order.getOrderId());
@@ -500,5 +505,87 @@ public class DBUtils {
         }
         log.info("pass a list of admins");
         return list;
+    }
+
+    public static List<User> getFullOrderedDishList(Connection connection, UserAccount loginedUser) throws SQLException {
+        String SQL = "SELECT id_orders, name, description, dishtype, dish_price, " +
+                "quantity_order, total_price_order, status_order\n" +
+                "FROM cafejavacore.dishes, cafejavacore.orders\n" +
+                "WHERE users_idusers_fk = ? \n" +
+                "AND iddishes=dishes_iddishes\n" +
+                "AND status_order != 'archived'";
+
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+
+        List<User> fullOrderedDishList = new ArrayList<>();
+
+        pstm.setInt(1, loginedUser.getId());
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            int orderId = rs.getInt(1);
+            String dishName = rs.getString(2);
+            String dishDescription = rs.getString(3);
+            String dishType = rs.getString(4);
+            double dishPrice = rs.getDouble(5);
+            byte orderQuantity = rs.getByte(6);
+            double orderTotalPrice = rs.getDouble(7);
+            String orderStatus = rs.getString("status_order");
+
+            User user = new User(orderId, dishName, dishDescription, dishType,
+                                dishPrice, orderQuantity, orderStatus, orderTotalPrice);
+
+            fullOrderedDishList.add(user);
+        }
+        return fullOrderedDishList;
+    }
+
+    public static int countAllCurrentOrders(Connection connection, int id) throws SQLException {
+        String SQL = "SELECT COUNT(status_order)\n" +
+                "FROM cafejavacore.orders\n" +
+                "WHERE users_idusers_fk = ? \n" +
+                "AND (status_order = 'ready' \n" +
+                "OR status_order = 'queueing up' \n" +
+                "OR status_order = 'preparing' \n" +
+                "OR status_order = 'billed')";
+
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+        pstm.setInt(1,id);
+
+        ResultSet rs = pstm.executeQuery();
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt(1);
+        }
+        return count;
+    }
+
+    public static int countNotBilledCurrentOrders(Connection connection, int id) throws SQLException {
+        String SQL = "SELECT COUNT(status_order)\n" +
+                "FROM cafejavacore.orders\n" +
+                "WHERE users_idusers_fk = 6 \n" +
+                "AND (status_order = 'ready'  \n" +
+                "OR status_order = 'queueing up' \n" +
+                "OR status_order = 'preparing')";
+
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+        pstm.setInt(1,id);
+
+        ResultSet rs = pstm.executeQuery();
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt(1);
+        }
+        return count;
+    }
+
+    public static void updateOrderStatusToArchived(Connection connection, int id) throws SQLException {
+        String SQL = "UPDATE cafejavacore.orders \n" +
+                "SET status_order = 'archived' \n" +
+                "WHERE status_order = 'billed'\n" +
+                "AND users_idusers_fk = ?";
+
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+        pstm.setInt(1, id);
+        pstm.executeUpdate();
     }
 }

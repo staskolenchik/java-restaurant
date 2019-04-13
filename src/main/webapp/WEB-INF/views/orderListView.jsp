@@ -26,7 +26,8 @@
                 <th>Dish Quantity</th>
                 <th>Total Cost</th>
                 <th>Order Status</th>
-
+                <th></th>
+                <th></th>
             </tr>
             <c:forEach items="${adminList}" var="admin" >
             <tr>

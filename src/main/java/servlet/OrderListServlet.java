@@ -1,7 +1,6 @@
 package servlet;
 
-import beans.Order;
-import beans.sql_request.Admin;
+import beans.sql_request_for.Admin;
 import org.apache.log4j.Logger;
 import utils.ClassNameUtils;
 import utils.DBUtils;

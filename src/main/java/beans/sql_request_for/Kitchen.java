@@ -1,4 +1,4 @@
-package beans.sql_request;
+package beans.sql_request_for;
 
 import beans.Dish;
 import beans.Order;

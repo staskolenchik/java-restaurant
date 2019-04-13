@@ -2,6 +2,7 @@ package servlet;
 
 import beans.Dish;
 import beans.UserAccount;
+import beans.sql_request_for.User;
 import org.apache.log4j.Logger;
 import utils.ClassNameUtils;
 import utils.DBUtils;
@@ -38,8 +39,11 @@ public class UserInfoServlet extends HttpServlet {
 
         UserAccount loginedUser = MyUtils.getLoginedUser(session);
         Connection connection = MyUtils.getStoredConnection(request);
-        List<Dish> orderedDishList = null;
+        List<User> orderedDishes = null;
         String errorString = null;
+        Double orderTotalCost = null;
+        int countAllCurrentOrders = 0;
+        int countNotBilledCurrentOrders = 0;
 
         // Not logged in
         if (loginedUser == null) {
@@ -49,15 +53,12 @@ public class UserInfoServlet extends HttpServlet {
         }
 
         try {
-            orderedDishList = DBUtils.getOrderedDishList(connection, loginedUser);
+            orderedDishes = DBUtils.getFullOrderedDishList(connection, loginedUser);
             log.info("get ordered dish list from data base");
         } catch (SQLException e) {
             e.printStackTrace();
-            errorString = "You don't have any orders yet";
             log.error(e.getMessage());
         }
-
-        Double orderTotalCost = null;
 
         try {
             orderTotalCost = DBUtils.getOrderedTotalCost(connection, loginedUser);
@@ -68,32 +69,57 @@ public class UserInfoServlet extends HttpServlet {
             log.error(e.getMessage());
         }
 
+        try {
+            countAllCurrentOrders = DBUtils.countAllCurrentOrders(connection, loginedUser.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            countNotBilledCurrentOrders = DBUtils.countNotBilledCurrentOrders(connection, loginedUser.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        boolean pay = false;
+        if (countAllCurrentOrders != 0 && countNotBilledCurrentOrders == 0) {
+            pay = true;
+        }
+
+        request.setAttribute("pay", pay);
+
         request.setAttribute("orderTotalCost",orderTotalCost);
         if (log.isDebugEnabled()) log.debug("set into request order total cost = " + orderTotalCost);
 
         request.setAttribute("errorString",errorString);
         if (log.isDebugEnabled()) log.debug("set into request errorString = " + errorString);
 
-        request.setAttribute("orderedDishList", orderedDishList);
+        request.setAttribute("orderedDishList", orderedDishes);
         if (log.isDebugEnabled()) log.debug("set into request ordered dish list");
 
         request.setAttribute("user", loginedUser);
         if (log.isDebugEnabled()) log.debug("store logined user attribute");
-        // If the user has logged in, then forward to the page
-        // /WEB-INF/views/userInfoView.jsp
+
         RequestDispatcher dispatcher //
                 = this.getServletContext().getRequestDispatcher("/WEB-INF/views/userInfoView.jsp");
         dispatcher.forward(request, response);
         log.info("forward to page /WEB-INF/views/userInfoView.jsp");
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
-        if (log.isDebugEnabled()) log.debug("invoke doGet method of path = " +
-                request.getContextPath() + request.getServletPath());
+
+        Connection connection = MyUtils.getStoredConnection(request);
+        UserAccount loginedUser = MyUtils.getLoginedUser(request.getSession());
+
+        try {
+            DBUtils.updateOrderStatusToArchived(connection, loginedUser.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        response.sendRedirect(request.getContextPath() + "/gratitude");
+
     }
 
 }

@@ -22,6 +22,7 @@ public class SecurityConfig {
         urlPatterns1.add("/userInfo");
         urlPatterns1.add("/dishes");
         urlPatterns1.add("/dish-order");
+        urlPatterns1.add("/gratitude");
 
         mapConfig.put(ROLE_CUSTOMER, urlPatterns1);
 
@@ -41,7 +42,7 @@ public class SecurityConfig {
         List<String> urlPatterns3 = new ArrayList<>();
 
         urlPatterns3.add("/kitchen");
-        urlPatterns2.add("/userInfo");
+        urlPatterns3.add("/userInfo");
 
         mapConfig.put(ROLE_KITCHEN, urlPatterns3);
     }
