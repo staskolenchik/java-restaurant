@@ -30,16 +30,22 @@
                 <th></th>
             </tr>
             <c:forEach items="${adminList}" var="admin" >
-            <tr>
-                <td>${admin.orderId}</td>
-                <td>${admin.userAccountName}</td>
-                <td>${admin.dishName}</td>
-                <td>${admin.dishPrice}</td>
-                <td>${admin.orderDate}</td>
-                <td>${admin.orderQuantity}</td>
-                <td>${admin.orderTotalCost}</td>
-                <td>${admin.orderStatus}</td>
-            </tr>
+                <tr>
+                    <td>${admin.orderId}</td>
+                    <td>${admin.userAccountName}</td>
+                    <td>${admin.dishName}</td>
+                    <td>${admin.dishPrice}</td>
+                    <td>${admin.orderDate}</td>
+                    <td>${admin.orderQuantity}</td>
+                    <td>${admin.orderTotalCost}</td>
+                    <td>${admin.orderStatus}</td>
+                    <c:if test="${admin.orderStatus} == 'ready'">
+                        <a href="orders?id=${admin.orderId}&status=${admin.orderStatus}">Make a bill</a>
+                    </c:if>
+                    <c:if test="${admin.orderStatus} == 'queueing up'">
+                        <a href="orders?id=${admin.orderId}&status=${admin.orderStatus}">Send to the kitchen</a>
+                    </c:if>
+                </tr>
             </c:forEach>
         </table>
     </c:if>
