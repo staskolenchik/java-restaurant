@@ -588,4 +588,22 @@ public class DBUtils {
         pstm.setInt(1, id);
         pstm.executeUpdate();
     }
+
+    public static void updateOrderStatusToPreparing(Connection connection, int orderId) throws SQLException {
+        String SQL = "UPDATE cafejavacore.orders\n" +
+                "SET status_order = 'preparing'\n" +
+                "WHERE id_orders = ?";
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+        pstm.setInt(1,orderId);
+        pstm.executeUpdate();
+    }
+
+    public static void updateOrderStatusToBilled(Connection connection, int orderId) throws SQLException {
+        String SQL = "UPDATE cafejavacore.orders\n" +
+                "SET status_order = 'billed'\n" +
+                "WHERE id_orders = ?";
+        PreparedStatement pstm = connection.prepareStatement(SQL);
+        pstm.setInt(1,orderId);
+        pstm.executeUpdate();
+    }
 }

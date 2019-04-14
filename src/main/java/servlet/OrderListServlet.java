@@ -28,11 +28,33 @@ public class OrderListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        int orderId = Integer.parseInt(request.getParameter("id"));
+        String orderStatus = request.getParameter("status");
+
         Connection connection = MyUtils.getStoredConnection(request);
         log.info("get stored connection from request");
 
         String errorString = null;
         List<Admin> adminList = null;
+
+        switch (orderStatus) {
+            case "queueing up" :
+                try {
+                    DBUtils.updateOrderStatusToPreparing(connection, orderId);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    log.error(e.getMessage());
+                }
+                break;
+            case "ready" :
+                try {
+                    DBUtils.updateOrderStatusToBilled(connection, orderId);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    log.error(e.getMessage());
+                }
+                break;
+        }
 
         try {
             adminList = DBUtils.getFullAdminDishList(connection);
