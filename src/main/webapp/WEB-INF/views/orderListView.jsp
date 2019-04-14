@@ -26,8 +26,8 @@
                 <th>Dish Quantity</th>
                 <th>Total Cost</th>
                 <th>Order Status</th>
-                <th></th>
-                <th></th>
+                <th>Bill Order</th>
+                <th>Cook Dish</th>
             </tr>
             <c:forEach items="${adminList}" var="admin" >
                 <tr>
@@ -39,12 +39,16 @@
                     <td>${admin.orderQuantity}</td>
                     <td>${admin.orderTotalCost}</td>
                     <td>${admin.orderStatus}</td>
-                    <c:if test="${admin.orderStatus} == 'ready'">
+                    <td>
+                    <c:if test="${admin.orderStatus == 'ready'}">
                         <a href="orders?id=${admin.orderId}&status=${admin.orderStatus}">Make a bill</a>
                     </c:if>
-                    <c:if test="${admin.orderStatus} == 'queueing up'">
+                    </td>
+                    <td>
+                    <c:if test="${admin.orderStatus == 'queueing up'}">
                         <a href="orders?id=${admin.orderId}&status=${admin.orderStatus}">Send to the kitchen</a>
                     </c:if>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
