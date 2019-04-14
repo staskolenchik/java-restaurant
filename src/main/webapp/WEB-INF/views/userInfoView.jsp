@@ -29,7 +29,7 @@
                 <th>Total Cost</th>
                 <th>Order Status</th>
             </tr>
-            <form method="POST" action="{pageContext.request.contextPath}/userInfo">
+            <form method="POST" action="${pageContext.request.contextPath}/userInfo">
                 <c:forEach items="${orderedDishList}" var="user" >
                     <tr>
                         <td>${user.dishName}</td>

@@ -71,12 +71,14 @@ public class UserInfoServlet extends HttpServlet {
 
         try {
             countAllCurrentOrders = DBUtils.countAllCurrentOrders(connection, loginedUser.getId());
+            if (log.isDebugEnabled()) log.info("Amount of all current orders = " + countAllCurrentOrders);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         try {
             countNotBilledCurrentOrders = DBUtils.countNotBilledCurrentOrders(connection, loginedUser.getId());
+            if (log.isDebugEnabled()) log.info("Amount of not billed current orders = " + countNotBilledCurrentOrders);
         } catch (SQLException e) {
             e.printStackTrace();
         }

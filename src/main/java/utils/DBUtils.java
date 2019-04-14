@@ -562,7 +562,7 @@ public class DBUtils {
     public static int countNotBilledCurrentOrders(Connection connection, int id) throws SQLException {
         String SQL = "SELECT COUNT(status_order)\n" +
                 "FROM cafejavacore.orders\n" +
-                "WHERE users_idusers_fk = 6 \n" +
+                "WHERE users_idusers_fk = ? \n" +
                 "AND (status_order = 'ready'  \n" +
                 "OR status_order = 'queueing up' \n" +
                 "OR status_order = 'preparing')";
