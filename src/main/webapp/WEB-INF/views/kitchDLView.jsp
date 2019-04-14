@@ -5,7 +5,7 @@
 <html>
  <head>
     <meta charset="UTF-8">
-    <title>Dish List</title>
+    <title>Kitchen</title>
  </head>
  <body>
 
@@ -14,20 +14,16 @@
 
     <h3>Dish List</h3>
 
-    <p style="color: red;">${errorString}</p>
-
-    <form method="POST" action="${pageContext.request.contextPath}/kitchen">
         <table border="1" cellpadding="5" cellspacing="1" >
            <tr>
-              <th>Name</th>
-              <th>Description</th>
+              <th>Dish Name</th>
+              <th>Dish Description</th>
               <th>Dish Type</th>
-              <th>Quantity</th>
-              <th>Status</th>
-              <th></th>
+              <th>Order Quantity</th>
+              <th>Order Status</th>
+              <th>Send Order to Administrator</th>
            </tr>
            <c:forEach items="${kitchenDishList}" var="kitchen" >
-           <input type="hidden" name="id" value="${kitchen.orderId}" />
               <tr>
                  <td>${kitchen.dishName}</td>
                  <td>${kitchen.dishDescription}</td>
@@ -35,12 +31,11 @@
                  <td>${kitchen.orderQuantity}</td>
                  <td>${kitchen.orderStatus}</td>
                  <td>
-                    <input type="submit" value="Ready" />
+                    <a href="kitchen?id=${kitchen.orderId}">Dish is Ready</a>
                  </td>
               </tr>
            </c:forEach>
         </table>
-    </form>
 
     <jsp:include page="_footer.jsp"></jsp:include>
 
