@@ -8,16 +8,9 @@ public class Kitchen {
     private Dish dish;
     private Order order;
 
-    public Kitchen(int orderId, String dishName, String dishDescription, String dishType,
-                   byte orderQuantity, String orderStatus) {
-        this.dish = new Dish();
-        this.order = new Order();
-        order.setOrderId(orderId);
-        dish.setName(dishName);
-        dish.setDescription(dishDescription);
-        dish.setDishType(dishType);
-        order.setOrderQuantity(orderQuantity);
-        order.setOrderStatus(orderStatus);
+    public Kitchen(Dish dish, Order order) {
+        this.dish = dish;
+        this.order = order;
     }
 
     public int getOrderId() {

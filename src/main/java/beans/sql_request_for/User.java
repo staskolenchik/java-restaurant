@@ -7,10 +7,9 @@ public class User {
     private Dish dish;
     private Order order;
 
-    public User(int orderId, String dishName, String dishDescription, String dishType,
-                   double dishPrice, byte orderQuantity, String orderStatus, double orderTotalCost) {
-        this.dish = new Dish(dishName, dishDescription, dishType, dishPrice);
-        this.order = new Order(orderId, orderQuantity, orderTotalCost, orderStatus);
+    public User(Dish dish, Order order) {
+        this.dish = dish;
+        this.order = order;
     }
 
     public int getOrderId() {

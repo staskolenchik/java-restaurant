@@ -51,6 +51,12 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
+    public Order(int orderId, byte orderQuantity, String orderStatus) {
+        this.orderId = orderId;
+        this.orderQuantity = orderQuantity;
+        this.orderStatus = orderStatus;
+    }
+
     public String getOrderStatus() {
         return orderStatus;
     }

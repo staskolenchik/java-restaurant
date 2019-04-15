@@ -10,13 +10,10 @@ public class Admin {
     private Order order;
     private UserAccount userAccount;
 
-    public Admin(int orderId, String userAccountName, String dishName,
-                 double dishPrice, String orderDate,
-                 byte orderQuantity, double orderTotalCost, String orderStatus) {
-
-        this.userAccount = new UserAccount(userAccountName);
-        this.dish = new Dish(dishName, dishPrice);
-        this.order = new Order(orderId, orderDate, orderQuantity, orderTotalCost,orderStatus);
+    public Admin(UserAccount userAccount, Order order, Dish dish) {
+        this.userAccount = userAccount;
+        this.order = order;
+        this.dish = dish;
     }
 
     public int getOrderId() {

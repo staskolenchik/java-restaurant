@@ -37,6 +37,12 @@ public class Dish {
         this.dishPrice = dishPrice;
     }
 
+    public Dish(String dishName, String dishDescription, String dishType) {
+        this.name = dishName;
+        this.description = dishDescription;
+        this.dishType = dishType;
+    }
+
     public int getId() {
         return id;
     }
